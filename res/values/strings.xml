@@ -3,5 +3,6 @@
 
     <string name="hello">Hello World, RandoWikActivity!</string>
     <string name="app_name">RandoWik</string>
+    <string name="refresh">Refresh</string>
 
 </resources>
