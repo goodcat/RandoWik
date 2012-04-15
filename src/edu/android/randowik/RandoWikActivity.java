@@ -13,8 +13,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-//TODO использовать ссылку http://ru.m.wikipedia.org/wiki/%D0%A1%D0%BB%D1%83%D0%B6%D0%B5%D0%B1%D0%BD%D0%B0%D1%8F:Random 
-//вместо API
 public class RandoWikActivity extends Activity {
 	RandomTitlesAdapter titlesAdapter;
 	Handler handler;
@@ -37,6 +35,7 @@ public class RandoWikActivity extends Activity {
 				Page page = (Page) titlesAdapter.getItem(position);
 				Intent intent = new Intent(RandoWikActivity.this,
 						WebViewWikiPageActivity.class);
+				intent.putExtra("content", page.getContent());
 				intent.putExtra("title", page.getTitle());
 				intent.putExtra("id", page.getId());
 				startActivity(intent);

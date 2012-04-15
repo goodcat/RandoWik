@@ -14,7 +14,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.webkit.WebView;
 import android.widget.Toast;
-import edu.android.randowik.bot.Bot;
 import edu.android.randowik.bot.Page;
 import edu.android.randowik.db.DbHelper;
 
@@ -43,14 +42,11 @@ public class WebViewWikiPageActivity extends Activity {
 						.getStringExtra("id");
 				String title = WebViewWikiPageActivity.this.getIntent()
 						.getStringExtra("title");
+				String content = WebViewWikiPageActivity.this.getIntent()
+						.getStringExtra("content");
 				page.setId(id);
 				page.setTitle(title);
-				Bot bot = new Bot();
-				try {
-					bot.fillPageHtmlContent(page);
-				} catch (Exception e) {
-					Log.e(TAG, "fillPageContent ERROR", e);
-				}
+				page.setContent(content);
 
 				handler.post(new Runnable() {
 
@@ -107,9 +103,7 @@ public class WebViewWikiPageActivity extends Activity {
 		}
 		return super.onOptionsItemSelected(item);
 	}
-	
 
-	
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();

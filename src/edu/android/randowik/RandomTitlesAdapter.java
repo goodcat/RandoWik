@@ -20,8 +20,10 @@ public class RandomTitlesAdapter extends BaseAdapter {
 	public RandomTitlesAdapter() {
 		Bot bot = new Bot();
 		try {
-			List<Page> temp = bot.fetchRandomPages();
-			this.pages.addAll(temp);
+			for (int i = 0; i < AppContext.getNumberOfPages(); i++) {
+				Page page = bot.fetchIndexRandomPage();
+				pages.add(page);
+			}
 		} catch (Exception e) {
 			Log.e(TAG, "RandomTitlesAdapter.fetchRandomPages ERROR", e);
 		}
