@@ -18,8 +18,10 @@ public class Bot {
 		List<Page> pages = null;
 		HttpClient client = new HttpClient();
 		DomParser parser = new DomParser();
-		String xmlString = client.loadPage(new URL(AppContext
-				.getApiEntryPoint() + "?" + randomPagesQueryString()));
+		String address = AppContext
+				.getApiEntryPoint() + "?" + randomPagesQueryString();
+		log("fetchRandomPages address: "+address);
+		String xmlString = client.loadPage(new URL(address));
 		pages = parser.loadRandomPages(xmlString);
 		return pages;
 	}
@@ -38,5 +40,26 @@ public class Bot {
 				+ page.getId()
 				+ "&rvprop=content&format=xml"));
 		parser.fillPageContent(page, xmlString);
+	}
+
+	public void fillPageHtmlContent(Page page) throws Exception {
+		if (page == null)
+			throw new IllegalArgumentException("Page cannot be null");
+		if (page.getId() == null)
+			throw new IllegalArgumentException("Page Id cannot be null");
+		HttpClient client = new HttpClient();
+		DomParser parser = new DomParser();
+		String address = AppContext
+				.getApiEntryPoint()
+				+ "?"
+				+ "format=xml&action=query&prop=revisions&pageids="
+				+ page.getId() + "&rvprop=content&rvsection=0&rvparse";
+		log("fillPageHtmlContent address: "+address);
+		String xmlString = client.loadPage(new URL(address));
+		parser.fillPageContent(page, xmlString);
+	}
+	
+	private static void log(String s) {
+		System.out.println(s);
 	}
 }

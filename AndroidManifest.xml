@@ -19,6 +19,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".WikiPageActivity"></activity>
+        <activity android:name=".WebViewWikiPageActivity"></activity>
+        <activity android:name=".ShowSavedPagesActivity"></activity>
+        <activity android:name=".ShowSavedWikiPageActivity"></activity>
     </application>
 </manifest>

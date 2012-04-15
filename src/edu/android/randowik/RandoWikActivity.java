@@ -6,10 +6,15 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+//TODO использовать ссылку http://ru.m.wikipedia.org/wiki/%D0%A1%D0%BB%D1%83%D0%B6%D0%B5%D0%B1%D0%BD%D0%B0%D1%8F:Random 
+//вместо API
 public class RandoWikActivity extends Activity {
 	RandomTitlesAdapter titlesAdapter;
 	Handler handler;
@@ -31,7 +36,7 @@ public class RandoWikActivity extends Activity {
 					int position, long id) {
 				Page page = (Page) titlesAdapter.getItem(position);
 				Intent intent = new Intent(RandoWikActivity.this,
-						WikiPageActivity.class);
+						WebViewWikiPageActivity.class);
 				intent.putExtra("title", page.getTitle());
 				intent.putExtra("id", page.getId());
 				startActivity(intent);
@@ -44,6 +49,23 @@ public class RandoWikActivity extends Activity {
 
 	public void onRefreshClicked(View view) {
 		process();
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater menuInflater = getMenuInflater();
+		menuInflater.inflate(R.menu.main_menu, menu);
+		return super.onCreateOptionsMenu(menu);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		if (item.getItemId() == R.id.show_saved_pages) {
+			Intent intent = new Intent(this, ShowSavedPagesActivity.class);
+			startActivity(intent);
+			return true;
+		}
+		return super.onOptionsItemSelected(item);
 	}
 
 	private void process() {
