@@ -18,11 +18,11 @@ public class ShowSavedPagesActivity extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.main);
+		setContentView(R.layout.saved_pages_list);
 
 		dbHelper = new DbHelper(this);
 
-		ListView listView = (ListView) findViewById(R.id.randomTitles);
+		ListView listView = (ListView) findViewById(R.id.savedPages);
 		pagesAdapter = new PagesAdapter(this, dbHelper.getAllPages());
 		listView.setAdapter(pagesAdapter);
 
@@ -35,15 +35,25 @@ public class ShowSavedPagesActivity extends Activity {
 						ShowSavedWikiPageActivity.class);
 				Cursor cursor = (Cursor) pagesAdapter.getCursor();
 				cursor.moveToPosition(position);
-				String pageId = cursor.getString(2);
-				String title = cursor.getString(3);
+				String pageId = cursor.getString(0);
+				String title = cursor.getString(2);
 				intent.putExtra("title", title);
 				intent.putExtra("id", pageId);
 				Log.d(TAG, "pageId: " + pageId + "; title: " + title);
 				startActivity(intent);
+				cursor.close();
 			}
 
 		});
+	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		
+		ListView listView = (ListView) findViewById(R.id.savedPages);
+		pagesAdapter = new PagesAdapter(this, dbHelper.getAllPages());
+		listView.setAdapter(pagesAdapter);
 	}
 
 	@Override

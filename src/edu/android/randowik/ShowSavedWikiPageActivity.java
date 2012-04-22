@@ -24,7 +24,8 @@ public class ShowSavedWikiPageActivity extends Activity {
 		String content = null;
 		Cursor cursor = dbHelper.findPageByPageId(id);
 		cursor.moveToFirst();
-		content = cursor.getString(4);
+		content = cursor.getString(3);
+		cursor.close();
 
 		WebView webView = (WebView) findViewById(R.id.webview);
 		String data = "<?xml version=\"1.0\" encoding=\"UTF-8\" ?><html><body>"

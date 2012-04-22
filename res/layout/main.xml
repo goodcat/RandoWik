@@ -2,29 +2,21 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:gravity="center|center_horizontal"
+    android:gravity="center|center_horizontal|top"
     android:orientation="vertical" >
 
-    <ListView
-        android:id="@+id/randomTitles"
+    <Button
+        android:id="@+id/buttonRandomPages"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1" >
-    </ListView>
+        android:onClick="buttonRandomPagesClicked"
+        android:text="Случайные статьи" />
 
-    <LinearLayout
+    <Button
+        android:id="@+id/buttonSavedPages"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="0"
-        android:gravity="center_horizontal" >
-
-        <Button
-            android:id="@+id/buttonRefresh"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="onRefreshClicked"
-            android:text="@string/refresh" />
-
-    </LinearLayout>
+        android:onClick="buttonSavedPagesClicked"
+        android:text="Сохраненные статьи" />
 
 </LinearLayout>

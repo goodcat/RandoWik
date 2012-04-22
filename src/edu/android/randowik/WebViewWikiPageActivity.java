@@ -1,5 +1,6 @@
 package edu.android.randowik;
 
+import java.net.URL;
 import java.util.Date;
 
 import android.app.Activity;
@@ -15,6 +16,7 @@ import android.view.MenuItem;
 import android.webkit.WebView;
 import android.widget.Toast;
 import edu.android.randowik.bot.Page;
+import edu.android.randowik.bot.http.HttpClient;
 import edu.android.randowik.db.DbHelper;
 
 public class WebViewWikiPageActivity extends Activity {
@@ -33,20 +35,17 @@ public class WebViewWikiPageActivity extends Activity {
 
 		dbHelper = new DbHelper(this);
 
-		final ProgressDialog dialog = ProgressDialog.show(this, "Loading",
-				"Loading wiki article");
+		final ProgressDialog dialog = ProgressDialog.show(this, "Loading", "Loading wiki article");
 		Thread th = new Thread() {
 			public void run() {
 				page = new Page();
-				String id = WebViewWikiPageActivity.this.getIntent()
-						.getStringExtra("id");
-				String title = WebViewWikiPageActivity.this.getIntent()
-						.getStringExtra("title");
-				String content = WebViewWikiPageActivity.this.getIntent()
-						.getStringExtra("content");
+				String id = WebViewWikiPageActivity.this.getIntent().getStringExtra("id");
+				String title = WebViewWikiPageActivity.this.getIntent().getStringExtra("title");
+				String pageUrl = WebViewWikiPageActivity.this.getIntent().getStringExtra("pageUrl");
 				page.setId(id);
 				page.setTitle(title);
-				page.setContent(content);
+				page.setPageUrl(pageUrl);
+				fillPageHtml(page);
 
 				handler.post(new Runnable() {
 
@@ -55,18 +54,12 @@ public class WebViewWikiPageActivity extends Activity {
 						WebView webView = (WebView) findViewById(R.id.webview);
 
 						if (page.getContent() == null) {
-							String data = "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>"
-									+ String.format(
-											"Не удалось загрузить страницу [%1s]",
-											page.getTitle());
+							String data = "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>" + String.format("Не удалось загрузить страницу [%1s]", page.getTitle());
 							webView.loadData(data, "text/html", null);
 						} else {
-							String data = "<?xml version=\"1.0\" encoding=\"UTF-8\" ?><html><body>"
-									+ page.getContent() + "</body></html>";
+							String data = "<?xml version=\"1.0\" encoding=\"UTF-8\" ?><html><body>" + page.getContent() + "</body></html>";
 							Log.d(TAG, data);
-							webView.loadDataWithBaseURL(
-									AppContext.getApiEntryPoint(), data,
-									"text/html", null, null);
+							webView.loadDataWithBaseURL(AppContext.getApiEntryPoint(), data, "text/html", null, null);
 						}
 
 						dialog.dismiss();
@@ -87,8 +80,7 @@ public class WebViewWikiPageActivity extends Activity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		if (item.getItemId() == R.id.go_to_full_version_menu_item) {
-			String id = WebViewWikiPageActivity.this.getIntent()
-					.getStringExtra("id");
+			String id = WebViewWikiPageActivity.this.getIntent().getStringExtra("id");
 			String address = AppContext.getIndexEntryPoint() + "?curid=" + id;
 			Log.d(TAG, "onOptionsItemSelected address: " + address);
 			Intent i = new Intent(Intent.ACTION_VIEW);
@@ -97,8 +89,7 @@ public class WebViewWikiPageActivity extends Activity {
 			return true;
 		}
 		if (item.getItemId() == R.id.save_page_menu_item) {
-			dbHelper.savePage(new Date(), page.getId(), page.getTitle(),
-					page.getContent());
+			dbHelper.savePage(new Date(), page.getId(), page.getTitle(), page.getContent(), page.getPageUrl());
 			Toast.makeText(this, "Page saved", Toast.LENGTH_SHORT).show();
 		}
 		return super.onOptionsItemSelected(item);
@@ -108,5 +99,18 @@ public class WebViewWikiPageActivity extends Activity {
 	protected void onDestroy() {
 		super.onDestroy();
 		dbHelper.close();
+	}
+
+	private void fillPageHtml(Page page) {
+		if (page.getPageUrl() == null)
+			throw new IllegalArgumentException("Page URL cannot be null");
+		HttpClient client = new HttpClient();
+		String html;
+		try {
+			html = client.loadPage(new URL(page.getPageUrl()));
+		} catch (Exception e) {
+			html = null;
+		}
+		page.setContent(html);
 	}
 }

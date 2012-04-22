@@ -61,7 +61,6 @@ public class Bot {
 
 	public Page fetchIndexRandomPage() throws Exception {
 		Page page = new Page();
-		HttpClient client = new HttpClient();
 		String address = AppContext.getRandomServicePageEntryPoint();
 		log("fetchIndexRandomPage address: " + address);
 		URL randomServiceUrl = new URL(address);
@@ -69,14 +68,12 @@ public class Bot {
 				.openConnection();
 		urlConn.setInstanceFollowRedirects(false);
 		String redirectedAddress = urlConn.getHeaderField("Location");
-		String html = client.loadPage(new URL(redirectedAddress));
 		log("redirected: " + redirectedAddress);
-		log("fetchIndexRandomPage html: " + html);
 		String decodedRedirectAddress = URLDecoder.decode(redirectedAddress, "UTF-8");
 		int indexOfLastSlash = decodedRedirectAddress.lastIndexOf('/') + 1;
 		String title = decodedRedirectAddress.substring(indexOfLastSlash);
 		page.setTitle(title);
-		page.setContent(html);
+		page.setPageUrl(redirectedAddress);
 		return page;
 	}
 

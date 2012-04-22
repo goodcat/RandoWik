@@ -17,7 +17,7 @@ public class PagesAdapter extends CursorAdapter {
 	@Override
 	public void bindView(View view, Context context, Cursor cursor) {
 		TextView titleView = (TextView) view.findViewById(R.id.titleView);
-		titleView.setText(cursor.getString(3));
+		titleView.setText(cursor.getString(2));
 	}
 
 	@Override

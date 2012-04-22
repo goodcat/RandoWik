@@ -21,7 +21,7 @@ public class RandoWikActivity extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.main);
+		setContentView(R.layout.random_pages_list);
 
 		handler = new Handler();
 
@@ -30,12 +30,10 @@ public class RandoWikActivity extends Activity {
 		listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
 			@Override
-			public void onItemClick(AdapterView<?> parent, View child,
-					int position, long id) {
+			public void onItemClick(AdapterView<?> parent, View child, int position, long id) {
 				Page page = (Page) titlesAdapter.getItem(position);
-				Intent intent = new Intent(RandoWikActivity.this,
-						WebViewWikiPageActivity.class);
-				intent.putExtra("content", page.getContent());
+				Intent intent = new Intent(RandoWikActivity.this, WebViewWikiPageActivity.class);
+				intent.putExtra("pageUrl", page.getPageUrl());
 				intent.putExtra("title", page.getTitle());
 				intent.putExtra("id", page.getId());
 				startActivity(intent);
@@ -68,8 +66,7 @@ public class RandoWikActivity extends Activity {
 	}
 
 	private void process() {
-		final ProgressDialog dialog = ProgressDialog.show(this, "Refreshing",
-				"Loading random wiki articles");
+		final ProgressDialog dialog = ProgressDialog.show(this, "Refreshing", "Loading random wiki articles");
 		Thread th = new Thread() {
 			public void run() {
 				refreshData();
