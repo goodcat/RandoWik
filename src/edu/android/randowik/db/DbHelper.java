@@ -53,6 +53,10 @@ public class DbHelper {
 	public Cursor findPageByPageId(String id) {
 		return database.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE " + PAGES_COLUMN_ID + " = ?", new String[] { id });
 	}
+	
+	public void deleteById(String id) {
+		database.delete(TABLE_NAME, " "+PAGES_COLUMN_ID + " = ?", new String[] {id});
+	}
 
 	private class RandoWikOpenHelper extends SQLiteOpenHelper {
 		RandoWikOpenHelper(Context context) {

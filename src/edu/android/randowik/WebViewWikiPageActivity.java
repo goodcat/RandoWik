@@ -80,8 +80,8 @@ public class WebViewWikiPageActivity extends Activity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		if (item.getItemId() == R.id.go_to_full_version_menu_item) {
-			String id = WebViewWikiPageActivity.this.getIntent().getStringExtra("id");
-			String address = AppContext.getIndexEntryPoint() + "?curid=" + id;
+			String pageUrl = WebViewWikiPageActivity.this.getIntent().getStringExtra("pageUrl");
+			String address = pageUrl;
 			Log.d(TAG, "onOptionsItemSelected address: " + address);
 			Intent i = new Intent(Intent.ACTION_VIEW);
 			i.setData(Uri.parse(address));
