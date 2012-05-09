@@ -6,6 +6,7 @@ import java.util.List;
 import edu.android.randowik.bot.Bot;
 import edu.android.randowik.bot.Page;
 
+import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,11 +17,14 @@ import android.widget.TextView;
 public class RandomTitlesAdapter extends BaseAdapter {
 	private static final String TAG = "RandomTitlesAdapter";
 	private List<Page> pages = new ArrayList<Page>();
+	private Context context;
 
-	public RandomTitlesAdapter() {
+	public RandomTitlesAdapter(Context context) {
+		this.context = context;
 		Bot bot = new Bot();
 		try {
-			for (int i = 0; i < AppContext.getNumberOfPages(); i++) {
+			int numOfRandPages = AppContext.getNumberOfPages(this.context);
+			for (int i = 0; i < numOfRandPages; i++) {
 				Page page = bot.fetchIndexRandomPage();
 				pages.add(page);
 			}

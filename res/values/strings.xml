@@ -6,5 +6,14 @@
     <string name="refresh">Refresh</string>
     <string name="go_to_full">Go to full version</string>
     <string name="show_saved_pages_string">Show saved pages</string>
+    <string name="string_settings">Настройки</string>
+    <string name="string_about">О программе</string>
+    <string name="setting_num_of_random_pages">Количество случайных статей</string>
+    <string name="setting_button_yes">Принять</string>
+    <string name="setting_button_cancel">Отменить</string>
+    <string name="about_title">О программе</string>
+    <string name="about_text">RandoWik 1.0</string>
+    <string name="about_close">Закрыть</string>
+    <string name="no_connection">Нет интернет-соединения</string>
 
 </resources>
