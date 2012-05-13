@@ -9,6 +9,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -102,7 +103,8 @@ public class RandoWikActivity extends Activity {
 	
 	private boolean isOnline() {
 		ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-		if(cm.getActiveNetworkInfo().isConnected()) {
+		NetworkInfo netInfo = cm.getActiveNetworkInfo();
+		if(netInfo!=null && netInfo.isConnected()) {
 			HttpClient client = new HttpClient();
 			try{
 				String result = client.loadPage(new URL("http://m.google.com"));
